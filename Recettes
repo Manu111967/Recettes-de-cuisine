@@ -1,0 +1,165 @@
+import React from 'react';
+import { Container, Grid } from '@mui/material';
+import Header from './components/Header';
+import RecipeList from './components/RecipeList';
+
+function App() {
+  return (
+    <div>
+      <Header />
+      <Container>
+        <RecipeList />
+      </Container>
+    </div>
+  );
+}
+
+export default App;
+import React from 'react';
+import { AppBar, Toolbar, Typography, Button } from '@mui/material';
+
+function Header() {
+  return (
+    <AppBar position="static">
+      <Toolbar>
+        <Typography variant="h6" style={{ flexGrow: 1 }}>
+          Recipe Sharing Platform
+        </Typography>
+        <Button color="inherit">Home</Button>
+        <Button color="inherit">Add Recipe</Button>
+        <Button color="inherit">My Recipes</Button>
+      </Toolbar>
+    </AppBar>
+  );
+}
+
+export default Header;
+import React from 'react';
+import { Grid } from '@mui/material';
+import RecipeItem from './RecipeItem';
+
+const recipes = [
+  {
+    id: 1,
+    title: 'Spaghetti Carbonara',
+    description: 'A classic Italian pasta dish',
+    image: '/images/carbonara.jpg',
+  },
+  {
+    id: 2,
+    title: 'Chicken Curry',
+    description: 'A spicy and flavorful dish',
+    image: '/images/curry.jpg',
+  },
+  // Ajoutez plus de recettes ici
+];
+
+function RecipeList() {
+  return (
+    <Grid container spacing={4}>
+      {recipes.map((recipe) => (
+        <Grid item xs={12} sm={6} md={4} key={recipe.id}>
+          <RecipeItem recipe={recipe} />
+        </Grid>
+      ))}
+    </Grid>
+  );
+}
+
+export default RecipeList;
+import React from 'react';
+import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
+
+function RecipeItem({ recipe }) {
+  return (
+    <Card>
+      <CardActionArea>
+        <CardMedia
+          component="img"
+          height="140"
+          image={recipe.image}
+          alt={recipe.title}
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {recipe.title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {recipe.description}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
+  );
+}
+
+export default RecipeItem;
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5f5f5;
+}
+
+#root {
+  padding-top: 64px; /* Espace pour le Header */
+}
+
+img {
+  width: 100%;
+  object-fit: cover;
+}
+import React, { useState } from 'react';
+import { Button, TextField, Container, Typography } from '@mui/material';
+
+function RecipeForm() {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Ajoutez ici la logique pour envoyer les données à Firebase
+    console.log({ title, description, image });
+  };
+
+  return (
+    <Container>
+      <Typography variant="h4" gutterBottom>
+        Add a New Recipe
+      </Typography>
+      <form onSubmit={handleSubmit}>
+        <TextField
+          fullWidth
+          label="Recipe Title"
+          variant="outlined"
+          margin="normal"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <TextField
+          fullWidth
+          label="Description"
+          variant="outlined"
+          margin="normal"
+          multiline
+          rows={4}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <TextField
+          fullWidth
+          label="Image URL"
+          variant="outlined"
+          margin="normal"
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
+        />
+        <Button variant="contained" color="primary" type="submit">
+          Submit
+        </Button>
+      </form>
+    </Container>
+  );
+}
+
+export default RecipeForm;
